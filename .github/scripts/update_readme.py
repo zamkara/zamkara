@@ -4,6 +4,7 @@ import re
 import sys
 import json
 import html
+import calendar
 import platform
 import subprocess
 import urllib.request
@@ -145,8 +146,7 @@ def get_github_profile():
     profile = github_api_request(f"users/{username}")
     created_at = datetime.strptime(profile["created_at"], "%Y-%m-%dT%H:%M:%SZ").replace(tzinfo=timezone.utc)
     public_total = int(profile.get("public_repos", 0)) + int(profile.get("public_gists", 0))
-    account_seconds = max(int((datetime.now(timezone.utc) - created_at).total_seconds()), 0)
-    return account_seconds, public_total
+    return created_at, public_total
 
 def get_memory():
     try:
@@ -167,18 +167,44 @@ def get_memory():
     except Exception:
         return "0MiB / 0MiB (0%)"
 
-def format_uptime(total_seconds):
-    days = int(total_seconds // 86400)
-    hours = int((total_seconds % 86400) // 3600)
-    minutes = int((total_seconds % 3600) // 60)
-    seconds = int(total_seconds % 60)
+def format_uptime(created_at):
+    now = datetime.now(timezone.utc)
+
+    years = now.year - created_at.year
+    months = now.month - created_at.month
+    days = now.day - created_at.day
+    hours = now.hour - created_at.hour
+    minutes = now.minute - created_at.minute
+    seconds = now.second - created_at.second
+
+    if seconds < 0:
+        minutes -= 1
+        seconds += 60
+    if minutes < 0:
+        hours -= 1
+        minutes += 60
+    if hours < 0:
+        days -= 1
+        hours += 24
+    if days < 0:
+        prev_month = now.month - 1 or 12
+        prev_year = now.year - (1 if now.month == 1 else 0)
+        days += calendar.monthrange(prev_year, prev_month)[1]
+        months -= 1
+    if months < 0:
+        months += 12
+        years -= 1
 
     parts = []
-    if days > 0:
+    if years > 0:
+        parts.append(f"{years}y")
+    if months > 0 or years > 0:
+        parts.append(f"{months}mo")
+    if days > 0 or months > 0 or years > 0:
         parts.append(f"{days}d")
-    if hours > 0 or days > 0:
+    if hours > 0 or days > 0 or months > 0 or years > 0:
         parts.append(f"{hours}h")
-    if minutes > 0 or hours > 0 or days > 0:
+    if minutes > 0 or hours > 0 or days > 0 or months > 0 or years > 0:
         parts.append(f"{minutes}m")
     parts.append(f"{seconds}s")
 
@@ -312,9 +338,9 @@ def update_readme():
         host_name = "ASUS TUF Gaming F15 FX506LH_FX506LH 1.0"
 
     kernel_name = get_kernel(cfg)
-    account_age_seconds, public_total = get_github_profile()
-    uptime_str = format_uptime(account_age_seconds)
-    pkgs_count = f"{public_total} (github)"
+    account_created_at, public_total = get_github_profile()
+    uptime_str = format_uptime(account_created_at)
+    pkgs_count = f"{public_total} (Pub)"
     memory_str = get_memory()
 
     # Generate .github/neofetch.svg
