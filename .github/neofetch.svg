@@ -23,9 +23,9 @@
   <text x="8" y="69" xml:space="preserve" class="logo">    /      \</text>
   <text x="149" y="69" xml:space="preserve"><tspan class="title">kernel    </tspan><tspan class="val">7.2.14-zen1-1-zen (x86_64)</tspan></text>
   <text x="8" y="85" xml:space="preserve" class="logo">   /   ,,   \</text>
-  <text x="149" y="85" xml:space="preserve"><tspan class="title">uptime    </tspan><tspan class="val">6y 1mo 27d 2h 54m 4s</tspan></text>
+  <text x="149" y="85" xml:space="preserve"><tspan class="title">uptime    </tspan><tspan class="val">6y 1mo 27d</tspan></text>
   <text x="8" y="101" xml:space="preserve" class="logo">  /   |  |  -\</text>
   <text x="149" y="101" xml:space="preserve"><tspan class="title">pkgs      </tspan><tspan class="val">88 Pub</tspan></text>
   <text x="8" y="117" xml:space="preserve" class="logo"> /_-&#x27;&#x27;    &#x27;&#x27;-_\</text>
-  <text x="149" y="117" xml:space="preserve"><tspan class="title">memory    </tspan><tspan class="val">1167MiB / 15983MiB (7.3%)</tspan></text>
+  <text x="149" y="117" xml:space="preserve"><tspan class="title">memory    </tspan><tspan class="val">1183MiB / 15982MiB (7.4%)</tspan></text>
 </svg>
