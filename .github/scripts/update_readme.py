@@ -340,7 +340,7 @@ def update_readme():
     kernel_name = get_kernel(cfg)
     account_created_at, public_total = get_github_profile()
     uptime_str = format_uptime(account_created_at)
-    pkgs_count = f"{public_total} (Pub)"
+    pkgs_count = f"{public_total} Pub"
     memory_str = get_memory()
 
     # Generate .github/neofetch.svg
