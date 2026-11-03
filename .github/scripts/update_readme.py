@@ -37,24 +37,14 @@ def load_distro_meta():
             pass
     return {}
 
-def get_user_at_host(cfg):
+def get_user_at_host(cfg, github_name=None):
     custom = cfg.get("user", "auto")
     if custom and custom != "auto":
         return custom
 
-    repo = os.environ.get("GITHUB_REPOSITORY", "")
-    if "/" in repo:
-        repo_name = repo.split("/")[-1]
-        return f"{repo_name}@github"
-    try:
-        r = subprocess.run(["git", "config", "--get", "remote.origin.url"], capture_output=True, text=True)
-        if r.returncode == 0 and r.stdout.strip():
-            url = r.stdout.strip()
-            repo_name = url.split("/")[-1].replace(".git", "")
-            if repo_name:
-                return f"{repo_name}@github"
-    except Exception:
-        pass
+    if github_name:
+        return f"{github_name}@github"
+
     return "github@github"
 
 def get_os_name():
@@ -146,7 +136,8 @@ def get_github_profile():
     profile = github_api_request(f"users/{username}")
     created_at = datetime.strptime(profile["created_at"], "%Y-%m-%dT%H:%M:%SZ").replace(tzinfo=timezone.utc)
     public_total = int(profile.get("public_repos", 0)) + int(profile.get("public_gists", 0))
-    return created_at, public_total
+    display_name = (profile.get("name") or profile.get("login") or username).strip()
+    return created_at, public_total, display_name
 
 def get_memory():
     try:
@@ -328,14 +319,14 @@ def update_readme():
     cfg = load_config()
     distros_meta = load_distro_meta()
 
-    user = get_user_at_host(cfg)
+    account_created_at, public_total, github_name = get_github_profile()
+    user = get_user_at_host(cfg, github_name)
     os_name = get_os_name()
     host_name = cfg.get("host", "ASUS TUF Gaming F15 FX506LH_FX506LH 1.0")
     if host_name == "auto":
         host_name = "ASUS TUF Gaming F15 FX506LH_FX506LH 1.0"
 
     kernel_name = get_kernel(cfg)
-    account_created_at, public_total = get_github_profile()
     uptime_str = format_uptime(account_created_at)
     pkgs_count = f"{public_total} Pub"
     memory_str = get_memory()
