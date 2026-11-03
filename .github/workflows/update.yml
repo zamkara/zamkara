@@ -49,7 +49,11 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           git config --global --add safe.directory "$GITHUB_WORKSPACE"
-          python .github/scripts/update_readme.py
+          if command -v python3 >/dev/null 2>&1; then
+            python3 .github/scripts/update_readme.py
+          else
+            python .github/scripts/update_readme.py
+          fi
 
       - name: Commit and push changes
         run: |
