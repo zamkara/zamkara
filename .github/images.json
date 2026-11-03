@@ -1,0 +1,55 @@
+{
+  "default": {
+    "image": "debian:latest",
+    "install": "apt-get update && apt-get install -y git python3",
+    "fallback": true
+  },
+  "arch": {
+    "image": "archlinux:latest",
+    "install": "pacman -Sy --noconfirm git python"
+  },
+  "artix": {
+    "image": "artixlinux/artixlinux:latest",
+    "install": "pacman -Sy --noconfirm git python"
+  },
+  "manjaro": {
+    "image": "manjarolinux/base:latest",
+    "install": "pacman -Sy --noconfirm git python"
+  },
+  "debian": {
+    "image": "debian:latest",
+    "install": "apt-get update && apt-get install -y git python3"
+  },
+  "devuan": {
+    "image": "devuan/devuan:latest",
+    "install": "apt-get update && apt-get install -y git python3"
+  },
+  "ubuntu": {
+    "image": "ubuntu:latest",
+    "install": "apt-get update && apt-get install -y git python3"
+  },
+  "fedora": {
+    "image": "fedora:latest",
+    "install": "dnf install -y git python3"
+  },
+  "centos": {
+    "image": "quay.io/centos/centos:stream10",
+    "install": "dnf install -y git python3"
+  },
+  "mageia": {
+    "image": "mageia:latest",
+    "install": "urpmi --auto git python3"
+  },
+  "opensuse": {
+    "image": "opensuse/tumbleweed:latest",
+    "install": "zypper --non-interactive install git python3"
+  },
+  "opensusetumbleweed": {
+    "image": "opensuse/tumbleweed:latest",
+    "install": "zypper --non-interactive install git python3"
+  },
+  "void": {
+    "image": "voidlinux/voidlinux:latest",
+    "install": "xbps-install -Sy git python3"
+  }
+}

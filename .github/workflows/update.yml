@@ -13,16 +13,32 @@ on:
   workflow_dispatch:
 
 jobs:
+  setup:
+    runs-on: ubuntu-latest
+    outputs:
+      image: ${{ steps.select.outputs.image }}
+      install: ${{ steps.select.outputs.install }}
+      fallback: ${{ steps.select.outputs.fallback }}
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Select container for selected distro
+        id: select
+        run: python3 .github/scripts/select_container.py
+
   update-readme:
+    needs: setup
     runs-on: ubuntu-latest
     container:
-      image: archlinux:latest
+      image: ${{ needs.setup.outputs.image }}
+    env:
+      GITHUB_OS_FALLBACK: ${{ needs.setup.outputs.fallback }}
     permissions:
       contents: write
     steps:
       - name: Install required packages
-        run: |
-          pacman -Sy --noconfirm git python
+        run: ${{ needs.setup.outputs.install }}
 
       - name: Checkout repository
         uses: actions/checkout@v4

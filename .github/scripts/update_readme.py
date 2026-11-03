@@ -47,13 +47,21 @@ def get_user_at_host(cfg, github_name=None):
 
     return "github@github"
 
+def get_runtime_fallback():
+    return os.environ.get("GITHUB_OS_FALLBACK", "").lower() in {"1", "true", "yes", "on"}
+
+def get_selected_os_name(cfg=None, distros_meta=None):
+    cfg = cfg or {}
+    distro_choice = cfg.get("distro", "auto").lower().strip()
+    meta = (distros_meta or {}).get(distro_choice, {})
+    return (meta.get("name") or "").strip()
+
 def get_os_name(cfg=None, distros_meta=None):
     cfg = cfg or {}
     distro_choice = cfg.get("distro", "auto").lower().strip()
 
-    if distro_choice != "auto":
-        meta = (distros_meta or {}).get(distro_choice, {})
-        selected_name = (meta.get("name") or "").strip()
+    if distro_choice != "auto" and get_runtime_fallback():
+        selected_name = get_selected_os_name(cfg, distros_meta)
         if selected_name:
             return f"{selected_name} [{platform.machine()}]"
 
@@ -281,8 +289,8 @@ def generate_neofetch_svg(cfg, distros_meta, user_header, os_name, host_name, ke
     height = int(total_rows * lineHeight) + paddingY * 2
 
     custom_col = cfg.get("custom_colors", {})
-    header_color = (custom_col.get("title") or "").strip() or "#58a6ff"
-    title_color = (custom_col.get("title") or "").strip() or "#58a6ff"
+    header_color = (custom_col.get("title") or "").strip() or logo_color
+    title_color = (custom_col.get("title") or "").strip() or logo_color
     val_color = (custom_col.get("value") or "").strip() or "#c9d1d9"
 
     svg_lines = []
@@ -316,8 +324,6 @@ def generate_neofetch_svg(cfg, distros_meta, user_header, os_name, host_name, ke
     .title {{ fill: {title_color}; font-weight: 600; }}
     .val {{ fill: {val_color}; }}
     @media (prefers-color-scheme: light) {{
-      .header {{ fill: #0969da; }}
-      .title {{ fill: #0969da; }}
       .val {{ fill: #24292f; }}
     }}
   </style>
