@@ -195,20 +195,17 @@ def format_uptime(created_at):
         months += 12
         years -= 1
 
-    parts = []
     if years > 0:
-        parts.append(f"{years}y")
-    if months > 0 or years > 0:
-        parts.append(f"{months}mo")
-    if days > 0 or months > 0 or years > 0:
-        parts.append(f"{days}d")
-    if hours > 0 or days > 0 or months > 0 or years > 0:
-        parts.append(f"{hours}h")
-    if minutes > 0 or hours > 0 or days > 0 or months > 0 or years > 0:
-        parts.append(f"{minutes}m")
-    parts.append(f"{seconds}s")
-
-    return " ".join(parts)
+        return f"{years}y {months}mo {days}d"
+    if months > 0:
+        return f"{months}mo {days}d {hours}h"
+    if days > 0:
+        return f"{days}d {hours}h {minutes}m"
+    if hours > 0:
+        return f"{hours}h {minutes}m {seconds}s"
+    if minutes > 0:
+        return f"{minutes}m {seconds}s"
+    return f"{seconds}s"
 
 def get_distro_ascii(cfg, distros_meta):
     distro_choice = cfg.get("distro", "arch").lower().strip()
