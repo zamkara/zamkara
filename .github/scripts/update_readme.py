@@ -47,7 +47,16 @@ def get_user_at_host(cfg, github_name=None):
 
     return "github@github"
 
-def get_os_name():
+def get_os_name(cfg=None, distros_meta=None):
+    cfg = cfg or {}
+    distro_choice = cfg.get("distro", "auto").lower().strip()
+
+    if distro_choice != "auto":
+        meta = (distros_meta or {}).get(distro_choice, {})
+        selected_name = (meta.get("name") or "").strip()
+        if selected_name:
+            return f"{selected_name} [{platform.machine()}]"
+
     pretty = None
     if os.path.exists("/etc/os-release"):
         try:
@@ -61,17 +70,17 @@ def get_os_name():
         except Exception:
             pass
     if not pretty:
-        pretty = "Arch Linux"
+        pretty = platform.system() or "Unknown"
     return f"{pretty} [{platform.machine()}]"
 
-def get_kernel(cfg):
+def get_kernel(cfg, distros_meta=None):
     custom = cfg.get("kernel", "auto")
     if custom and custom != "auto":
         return custom
 
-    distro_key = cfg.get("distro", "arch").lower()
+    distro_key = cfg.get("distro", "auto").lower()
 
-    if "arch" in distro_key or "arch" in get_os_name().lower():
+    if "arch" in distro_key or "arch" in get_os_name(cfg, distros_meta).lower():
         try:
             rel = platform.release().strip()
             if "zen" in rel:
@@ -321,12 +330,12 @@ def update_readme():
 
     account_created_at, public_total, github_name = get_github_profile()
     user = get_user_at_host(cfg, github_name)
-    os_name = get_os_name()
+    os_name = get_os_name(cfg, distros_meta)
     host_name = cfg.get("host", "ASUS TUF Gaming F15 FX506LH_FX506LH 1.0")
     if host_name == "auto":
         host_name = "ASUS TUF Gaming F15 FX506LH_FX506LH 1.0"
 
-    kernel_name = get_kernel(cfg)
+    kernel_name = get_kernel(cfg, distros_meta)
     uptime_str = format_uptime(account_created_at)
     pkgs_count = f"{public_total} Pub"
     memory_str = get_memory()

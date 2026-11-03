@@ -1,186 +1,232 @@
 {
   "alpine": {
     "color": "#0d597f",
-    "file": "ascii/alpine.txt"
+    "file": "ascii/alpine.txt",
+    "name": "Alpine Linux"
   },
   "android": {
     "color": "#98c379",
-    "file": "ascii/android.txt"
+    "file": "ascii/android.txt",
+    "name": "Android"
   },
   "arch": {
     "color": "#1793d1",
-    "file": "ascii/arch.txt"
+    "file": "ascii/arch.txt",
+    "name": "Arch Linux"
   },
   "arco": {
     "color": "#1793d1",
-    "file": "ascii/arco.txt"
+    "file": "ascii/arco.txt",
+    "name": "ArcoLinux"
   },
   "artix": {
     "color": "#1793d1",
-    "file": "ascii/artix.txt"
+    "file": "ascii/artix.txt",
+    "name": "Artix Linux"
   },
   "bedrock": {
     "color": "#61afef",
-    "file": "ascii/bedrock.txt"
+    "file": "ascii/bedrock.txt",
+    "name": "Bedrock Linux"
   },
   "buildroot": {
     "color": "#e5c07b",
-    "file": "ascii/buildroot.txt"
+    "file": "ascii/buildroot.txt",
+    "name": "Buildroot"
   },
   "centos": {
     "color": "#c678dd",
-    "file": "ascii/centos.txt"
+    "file": "ascii/centos.txt",
+    "name": "CentOS"
   },
   "dahlia": {
     "color": "#e06c75",
-    "file": "ascii/dahlia.txt"
+    "file": "ascii/dahlia.txt",
+    "name": "dahliaOS"
   },
   "debian": {
     "color": "#d70a53",
-    "file": "ascii/debian.txt"
+    "file": "ascii/debian.txt",
+    "name": "Debian"
   },
   "devuan": {
     "color": "#56b6c2",
-    "file": "ascii/devuan.txt"
+    "file": "ascii/devuan.txt",
+    "name": "Devuan"
   },
   "dragonfly": {
     "color": "#e06c75",
-    "file": "ascii/dragonfly.txt"
+    "file": "ascii/dragonfly.txt",
+    "name": "DragonflyBSD"
   },
   "endeavour": {
     "color": "#7b3e9e",
-    "file": "ascii/endeavour.txt"
+    "file": "ascii/endeavour.txt",
+    "name": "EndeavourOS"
   },
   "fedora": {
     "color": "#294172",
-    "file": "ascii/fedora.txt"
+    "file": "ascii/fedora.txt",
+    "name": "Fedora"
   },
   "freebsd": {
     "color": "#ab2b28",
-    "file": "ascii/freebsd.txt"
+    "file": "ascii/freebsd.txt",
+    "name": "FreeBSD"
   },
   "garuda": {
     "color": "#00d0ff",
-    "file": "ascii/garuda.txt"
+    "file": "ascii/garuda.txt",
+    "name": "Garuda Linux"
   },
   "gentoo": {
     "color": "#d6c8ff",
-    "file": "ascii/gentoo.txt"
+    "file": "ascii/gentoo.txt",
+    "name": "Gentoo Linux"
   },
   "gnu": {
     "color": "#e5c07b",
-    "file": "ascii/gnu.txt"
+    "file": "ascii/gnu.txt",
+    "name": "GNU"
   },
   "guixsd": {
     "color": "#e5c07b",
-    "file": "ascii/guixsd.txt"
+    "file": "ascii/guixsd.txt",
+    "name": "Guix System"
   },
   "haiku": {
     "color": "#e5c07b",
-    "file": "ascii/haiku.txt"
+    "file": "ascii/haiku.txt",
+    "name": "Haiku"
   },
   "hydroos": {
     "color": "#61afef",
-    "file": "ascii/hydroos.txt"
+    "file": "ascii/hydroos.txt",
+    "name": "HydroOS"
   },
   "irix": {
     "color": "#e06c75",
-    "file": "ascii/irix.txt"
+    "file": "ascii/irix.txt",
+    "name": "IRIX"
   },
   "kdeneon": {
     "color": "#56b6c2",
-    "file": "ascii/kdeneon.txt"
+    "file": "ascii/kdeneon.txt",
+    "name": "KDE neon"
   },
   "linuxlite": {
     "color": "#e5c07b",
-    "file": "ascii/linuxlite.txt"
+    "file": "ascii/linuxlite.txt",
+    "name": "Linux Lite"
   },
   "linuxmint": {
     "color": "#87cf3e",
-    "file": "ascii/linuxmint.txt"
+    "file": "ascii/linuxmint.txt",
+    "name": "Linux Mint"
   },
   "linux": {
     "color": "#61afef",
-    "file": "ascii/linux.txt"
+    "file": "ascii/linux.txt",
+    "name": "Linux"
   },
   "macos": {
     "color": "#33ccff",
-    "file": "ascii/macos.txt"
+    "file": "ascii/macos.txt",
+    "name": "macOS"
   },
   "mageia": {
     "color": "#98c379",
-    "file": "ascii/mageia.txt"
+    "file": "ascii/mageia.txt",
+    "name": "Mageia"
   },
   "manjaro": {
     "color": "#35bf5c",
-    "file": "ascii/manjaro.txt"
+    "file": "ascii/manjaro.txt",
+    "name": "Manjaro Linux"
   },
   "minix": {
     "color": "#61afef",
-    "file": "ascii/minix.txt"
+    "file": "ascii/minix.txt",
+    "name": "Minix"
   },
   "netbsd": {
     "color": "#e5c07b",
-    "file": "ascii/netbsd.txt"
+    "file": "ascii/netbsd.txt",
+    "name": "NetBSD"
   },
   "nixos": {
     "color": "#5277c3",
-    "file": "ascii/nixos.txt"
+    "file": "ascii/nixos.txt",
+    "name": "NixOS"
   },
   "openbsd": {
     "color": "#e5c07b",
-    "file": "ascii/openbsd.txt"
+    "file": "ascii/openbsd.txt",
+    "name": "OpenBSD"
   },
   "opensusetumbleweed": {
     "color": "#98c379",
-    "file": "ascii/opensusetumbleweed.txt"
+    "file": "ascii/opensusetumbleweed.txt",
+    "name": "openSUSE Tumbleweed"
   },
   "opensuse": {
     "color": "#98c379",
-    "file": "ascii/opensuse.txt"
+    "file": "ascii/opensuse.txt",
+    "name": "openSUSE"
   },
   "openwrt": {
     "color": "#e06c75",
-    "file": "ascii/openwrt.txt"
+    "file": "ascii/openwrt.txt",
+    "name": "OpenWrt"
   },
   "parabola": {
     "color": "#c678dd",
-    "file": "ascii/parabola.txt"
+    "file": "ascii/parabola.txt",
+    "name": "Parabola"
   },
   "pop_os": {
     "color": "#56b6c2",
-    "file": "ascii/pop_os.txt"
+    "file": "ascii/pop_os.txt",
+    "name": "Pop!_OS"
   },
   "raspbian": {
     "color": "#e06c75",
-    "file": "ascii/raspbian.txt"
+    "file": "ascii/raspbian.txt",
+    "name": "Raspbian"
   },
   "serenityos": {
     "color": "#61afef",
-    "file": "ascii/serenityos.txt"
+    "file": "ascii/serenityos.txt",
+    "name": "SerenityOS"
   },
   "slackware": {
     "color": "#61afef",
-    "file": "ascii/slackware.txt"
+    "file": "ascii/slackware.txt",
+    "name": "Slackware"
   },
   "solus": {
     "color": "#61afef",
-    "file": "ascii/solus.txt"
+    "file": "ascii/solus.txt",
+    "name": "Solus"
   },
   "sunos": {
     "color": "#e5c07b",
-    "file": "ascii/sunos.txt"
+    "file": "ascii/sunos.txt",
+    "name": "Solaris"
   },
   "ubuntu": {
     "color": "#e95420",
-    "file": "ascii/ubuntu.txt"
+    "file": "ascii/ubuntu.txt",
+    "name": "Ubuntu"
   },
   "void": {
     "color": "#478061",
-    "file": "ascii/void.txt"
+    "file": "ascii/void.txt",
+    "name": "Void Linux"
   },
   "xeonix": {
     "color": "#98c379",
-    "file": "ascii/xeonix.txt"
+    "file": "ascii/xeonix.txt",
+    "name": "Xeonix Linux"
   }
 }
