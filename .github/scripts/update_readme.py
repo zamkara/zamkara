@@ -3,9 +3,7 @@ import os
 import re
 import sys
 import json
-import time
 import html
-import shutil
 import platform
 import subprocess
 import urllib.request
@@ -17,11 +15,8 @@ GITHUB_DIR = REPO_ROOT / ".github"
 CONFIG_FILE = GITHUB_DIR / "config.json"
 ASCII_DIR = GITHUB_DIR / "ascii"
 DISTROS_FILE = ASCII_DIR / "distros.json"
-STATS_FILE = GITHUB_DIR / "stats.json"
 SVG_FILE = GITHUB_DIR / "neofetch.svg"
 README_FILE = REPO_ROOT / "README.md"
-
-START_TIME = time.time()
 
 def load_config():
     if CONFIG_FILE.exists():
@@ -59,7 +54,7 @@ def get_user_at_host(cfg):
                 return f"{repo_name}@github"
     except Exception:
         pass
-    return "zamkara@github"
+    return "github@github"
 
 def get_os_name():
     pretty = None
@@ -108,50 +103,50 @@ def get_kernel(cfg):
 
     return f"{platform.release()} ({platform.machine()})"
 
-def get_packages():
-    counts = []
-    # pacman
-    if shutil.which("pacman"):
-        try:
-            r = subprocess.run(["pacman", "-Qq"], capture_output=True, text=True)
-            if r.returncode == 0:
-                c = len(r.stdout.strip().splitlines())
-                if c > 0:
-                    counts.append(f"{c} (pacman)")
-        except Exception:
-            pass
-    # flatpak
-    if shutil.which("flatpak"):
-        try:
-            r = subprocess.run(["flatpak", "list"], capture_output=True, text=True)
-            if r.returncode == 0:
-                c = len(r.stdout.strip().splitlines())
-                if c > 0:
-                    counts.append(f"{c} (flatpak)")
-        except Exception:
-            pass
-    # dpkg
-    if shutil.which("dpkg-query"):
-        try:
-            r = subprocess.run(["dpkg-query", "-f", ".\\n", "-W"], capture_output=True, text=True)
-            if r.returncode == 0:
-                c = len(r.stdout.strip().splitlines())
-                if c > 0:
-                    counts.append(f"{c} (dpkg)")
-        except Exception:
-            pass
-    # rpm
-    if shutil.which("rpm"):
-        try:
-            r = subprocess.run(["rpm", "-qa"], capture_output=True, text=True)
-            if r.returncode == 0:
-                c = len(r.stdout.strip().splitlines())
-                if c > 0:
-                    counts.append(f"{c} (rpm)")
-        except Exception:
-            pass
+def github_api_request(path):
+    url = f"https://api.github.com/{path.lstrip('/')}"
+    headers = {
+        "Accept": "application/vnd.github+json",
+        "User-Agent": "Mozilla/5.0 (GitHubActions)",
+    }
+    token = os.environ.get("GITHUB_TOKEN") or os.environ.get("GH_TOKEN")
+    if token:
+        headers["Authorization"] = f"Bearer {token}"
 
-    return ", ".join(counts) if counts else "0 packages"
+    req = urllib.request.Request(url, headers=headers)
+    with urllib.request.urlopen(req, timeout=10) as resp:
+        return json.loads(resp.read().decode("utf-8"))
+
+
+def get_github_username():
+    username = os.environ.get("GITHUB_USERNAME") or os.environ.get("GITHUB_REPOSITORY_OWNER")
+    if username:
+        return username.strip()
+
+    repo = os.environ.get("GITHUB_REPOSITORY", "")
+    if "/" in repo:
+        return repo.split("/", 1)[0].strip()
+
+    try:
+        r = subprocess.run(["git", "config", "--get", "remote.origin.url"], capture_output=True, text=True)
+        if r.returncode == 0 and r.stdout.strip():
+            url = r.stdout.strip()
+            match = re.search(r"github\.com[:/]([^/]+)/", url)
+            if match:
+                return match.group(1)
+    except Exception:
+        pass
+
+    raise RuntimeError("Unable to determine GitHub username")
+
+
+def get_github_profile():
+    username = get_github_username()
+    profile = github_api_request(f"users/{username}")
+    created_at = datetime.strptime(profile["created_at"], "%Y-%m-%dT%H:%M:%SZ").replace(tzinfo=timezone.utc)
+    public_total = int(profile.get("public_repos", 0)) + int(profile.get("public_gists", 0))
+    account_seconds = max(int((datetime.now(timezone.utc) - created_at).total_seconds()), 0)
+    return account_seconds, public_total
 
 def get_memory():
     try:
@@ -172,21 +167,7 @@ def get_memory():
     except Exception:
         return "0MiB / 0MiB (0%)"
 
-def load_stats():
-    if STATS_FILE.exists():
-        try:
-            with open(STATS_FILE, "r") as f:
-                return json.load(f)
-        except Exception:
-            pass
-    return {"total_seconds": 0, "runs_count": 0, "last_run": None}
-
-def save_stats(stats):
-    STATS_FILE.parent.mkdir(parents=True, exist_ok=True)
-    with open(STATS_FILE, "w") as f:
-        json.dump(stats, f, indent=2)
-
-def format_uptime(total_seconds, runs_count):
+def format_uptime(total_seconds):
     days = int(total_seconds // 86400)
     hours = int((total_seconds % 86400) // 3600)
     minutes = int((total_seconds % 3600) // 60)
@@ -201,8 +182,7 @@ def format_uptime(total_seconds, runs_count):
         parts.append(f"{minutes}m")
     parts.append(f"{seconds}s")
 
-    time_str = " ".join(parts)
-    return f"{time_str} ({runs_count} runs)"
+    return " ".join(parts)
 
 def get_distro_ascii(cfg, distros_meta):
     distro_choice = cfg.get("distro", "arch").lower().strip()
@@ -324,14 +304,6 @@ def generate_neofetch_svg(cfg, distros_meta, user_header, os_name, host_name, ke
 def update_readme():
     cfg = load_config()
     distros_meta = load_distro_meta()
-    stats = load_stats()
-
-    elapsed = max(int(time.time() - START_TIME), 15)
-    stats["total_seconds"] = stats.get("total_seconds", 0) + elapsed
-    stats["runs_count"] = stats.get("runs_count", 0) + 1
-    stats["last_run"] = datetime.now(timezone.utc).isoformat()
-
-    save_stats(stats)
 
     user = get_user_at_host(cfg)
     os_name = get_os_name()
@@ -340,8 +312,9 @@ def update_readme():
         host_name = "ASUS TUF Gaming F15 FX506LH_FX506LH 1.0"
 
     kernel_name = get_kernel(cfg)
-    uptime_str = format_uptime(stats["total_seconds"], stats["runs_count"])
-    pkgs_count = get_packages()
+    account_age_seconds, public_total = get_github_profile()
+    uptime_str = format_uptime(account_age_seconds)
+    pkgs_count = f"{public_total} (github)"
     memory_str = get_memory()
 
     # Generate .github/neofetch.svg

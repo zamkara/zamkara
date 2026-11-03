@@ -7,7 +7,6 @@ on:
     paths-ignore:
       - 'README.md'
       - '.github/neofetch.svg'
-      - '.github/stats.json'
   schedule:
     # Run everyday at 00:00 UTC
     - cron: '0 0 * * *'
@@ -29,6 +28,9 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Run update script
+        env:
+          GITHUB_USERNAME: ${{ github.repository_owner }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           git config --global --add safe.directory "$GITHUB_WORKSPACE"
           python .github/scripts/update_readme.py
