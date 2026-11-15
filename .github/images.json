@@ -6,15 +6,15 @@
   },
   "arch": {
     "image": "archlinux:latest",
-    "install": "pacman -Sy --noconfirm git python"
+    "install": "pacman -Syu --noconfirm git python"
   },
   "artix": {
     "image": "artixlinux/artixlinux:latest",
-    "install": "pacman -Sy --noconfirm git python"
+    "install": "pacman -Syu --noconfirm git python"
   },
   "manjaro": {
     "image": "manjarolinux/base:latest",
-    "install": "pacman -Sy --noconfirm git python"
+    "install": "pacman -Syu --noconfirm git python"
   },
   "debian": {
     "image": "debian:latest",
